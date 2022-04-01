@@ -1,29 +1,47 @@
-# _Project Title_
+# _🐶 Animal Shelter API 🐱_
 #### By _**Brenna Lavin**_
 
-#### _mini description_
+#### _This project is a Web Api application for an animal shelter_
 
 ## Technologies Used
 
 * C#
 * .NET
-* MStest
-* Razor
-* ASP.NET MVC
+* Swagger
+* MySQL Workbench
+* Microsoft EntityFramework Core
 
 ## Description
 
-_Description goes here_
+_This project is an exploration in creating APIs while adding a variety of features like versioning, pagination and Swagger documentation_
 
 ## Setup/Installation Requirements
 
+* In order to use this application you must have MySQL Workbench installed. Depending on your machine please follow setup instructions listed here
 * Clone this repository to your local machine
-* While in the root directory, type ```cd Project.Tests``` in your command line to Navigate to the Bakery.Tests folder.
-* To install the project's dependencies, in the command line type ```dotnet restore```
-* Once dependencies are installed, type ```dotnet test``` in the command line to run the project's tests.
-* After testing is finished, type ```cd ..``` in the command line to return to the folder's root directory
-* To run the application navigate to the Project folder by typing ```cd Project```.
-* Once in the Project folder, type ```dotnet run``` in the command line to run the program.
+* Navigate to the project's ```AnimalShelter``` folder.
+* In the project's ```Animal Shelter``` folder, you will next need to create an appsettings.json file with the following information where YOURPASSWORDHERE is the password used to connect to MySQL:
+  
+```
+  {
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft": "Warning",
+      "Microsoft.Hosting.Lifetime": "Information"
+    }
+  },
+  "AllowedHosts": "*",
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=localhost;Port=3306;database=brenna_lavin;uid=root;pwd=Literatur3!;"
+  }
+  ```
+
+}
+Once saved, type cd Pierre in your command line to navigate to the main project folder.
+To install the project's dependencies, in the command line type dotnet restore
+To ensure the database is properly connected to the project, type dotnet ef database update, this will ideally apply the most recent migration of the database.
+Once in the Project folder, type dotnet run in the command line to run the program.
 
 ## Known Bugs
 
