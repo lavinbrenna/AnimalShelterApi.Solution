@@ -47,6 +47,7 @@ namespace AnimalShelter
                 o.AssumeDefaultVersionWhenUnspecified = true;
                 o.DefaultApiVersion = new ApiVersion(1,0);
             });
+            services.AddSwaggerDocument();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {
@@ -63,25 +64,25 @@ namespace AnimalShelter
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
-    {
-     if (env.IsDevelopment())
+        {
+            if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
-                // app.UseSwagger();
-                app.UseSwaggerUI(c => 
-              {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "TravelApi v1");
-              });
             }
 
             // app.UseHttpsRedirection();
-            app.UseStaticFiles();
+
+            app.UseOpenApi(); //
+            app.UseSwaggerUi3();//
+
             app.UseRouting();
+
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
-    }
+        }
   }
 }
