@@ -45,9 +45,9 @@ namespace AnimalShelter
             services.AddApiVersioning( o => {
                 o.ReportApiVersions = true;
                 o.AssumeDefaultVersionWhenUnspecified = true;
-                o.DefaultApiVersion = new ApiVersion(1,0);
+                o.DefaultApiVersion = new ApiVersion(2,0);
             });
-            services.AddSwaggerDocument();
+            
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo {
@@ -60,6 +60,22 @@ namespace AnimalShelter
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 c.IncludeXmlComments(xmlPath);
             });
+            services.AddSwaggerDocument(config=>
+            {
+              config.PostProcess = document => 
+              {
+                document.Info.Version="v2";
+                document.Info.Title = "AnimalShelter APi";
+                document.Info.Description = "An ASP.NET Core Web Api for an Animal Shelter";
+                document.Info.Contact = new NSwag.OpenApiContact
+                {
+                  Name = "Brenna Lavin",
+                  Email = "lavinbrenna@gmail.com",
+                  Url ="https://github.com/lavinbrenna"
+                };
+              };
+            }
+            );
 
     }
 
@@ -69,8 +85,6 @@ namespace AnimalShelter
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            // app.UseHttpsRedirection();
 
             app.UseOpenApi(); //
             app.UseSwaggerUi3();//

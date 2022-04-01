@@ -15,51 +15,59 @@ using AnimalShelter.Wrappers;
 namespace AnimalShelter.Controllers
 
 {
-    // [ApiVersion("1.0")]
-    // [Route("api/{m:apiVersion}/Animals")]
-    // public class AnimalsV1Controller : Controller
-    // {
-    //     [HttpGet]
-    //     public IEnumerable<string> Get()
-    //     {
-    //         return new string[] {"Value1 from Version 1", "value2 from Version 1"};
-    //     }
-    // }
-
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AnimalsController : ControllerBase
+    [ApiVersion("1.0")]
+    [Route("api/{m:apiVersion}/Animals")]
+    public class AnimalsV1Controller : Controller
     {
         private readonly AnimalShelterContext db;
         private readonly IUriService uriService;
-
-        public AnimalsController(AnimalShelterContext db, IUriService uriService)
+        public AnimalsV1Controller(AnimalShelterContext db, IUriService uriService)
         {
             this.db = db;
             this.uriService = uriService;
 
         }
+          //GET: api/Animals
+        ///<summary>
+        ///Shows paginated version of results 
+        ///</summary>
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
+        {
+            var route = Request.Path.Value;
+            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+            var pagedData = await db.Animals
+                .Skip((validFilter.PageNumber - 1) *validFilter.PageSize)
+                .Take(validFilter.PageSize)
+                .ToListAsync();
+            var totalRecords = await db.Animals.CountAsync();
+            var pagedResponse = PaginationHelper.CreatePagedResponse<Animal>(pagedData, validFilter, totalRecords, uriService, route);
+            return Ok(pagedResponse);
+        }
+    }
+    [ApiVersion("2.0")]
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AnimalsController : ControllerBase
+    {
+        private readonly AnimalShelterContext _db;
 
-        // GET: api/Animals
-        // [HttpGet]
-        // public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
-        // {
-        //     var route = Request.Path.Value;
-        //     var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-        //     var pagedData = await db.Animals
-        //         .Skip((validFilter.PageNumber - 1) *validFilter.PageSize)
-        //         .Take(validFilter.PageSize)
-        //         .ToListAsync();
-        //     var totalRecords = await db.Animals.CountAsync();
-        //     var pagedResponse = PaginationHelper.CreatePagedResponse<Animal>(pagedData, validFilter, totalRecords, uriService, route);
-        //     return Ok(pagedResponse);
-        // }
+        public AnimalsController(AnimalShelterContext db )
+        {
+            _db = db;
 
-        //GET:api/Animals/
+        }
+
+     
+
+        ///GET:api/Animals/
+        ///<summary>
+        ///Gets Animals based on query url
+        ///</summary>
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Animal>>> Get(string breed, string type, string name, string gender, int toDate, int fromDate)
         {
-            var query = db.Animals.AsQueryable();
+            var query = _db.Animals.AsQueryable();
 
             if (breed != null)
             {
@@ -79,11 +87,15 @@ namespace AnimalShelter.Controllers
             }
             return await query.ToListAsync();
         }
-        // GET: api/Animals/5
+        
+        // GET: api/Animals/5/
+        ///<summary>
+        ///Gets Animals based on id
+        ///</summary>
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAnimal(int id)
         {
-            var animal = await db.Animals.FindAsync(id);
+            var animal = await _db.Animals.FindAsync(id);
 
             if (animal == null)
             {
@@ -94,6 +106,9 @@ namespace AnimalShelter.Controllers
         }
 
         // PUT: api/Animals/5
+        ///<summary>
+        ///Updates Animal based on id
+        ///</summary>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         public async Task<IActionResult> PutAnimal(int id, Animal animal)
@@ -103,11 +118,11 @@ namespace AnimalShelter.Controllers
                 return BadRequest();
             }
 
-            db.Entry(animal).State = EntityState.Modified;
+            _db.Entry(animal).State = EntityState.Modified;
 
             try
             {
-                await db.SaveChangesAsync();
+                await _db.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -125,35 +140,41 @@ namespace AnimalShelter.Controllers
         }
 
         // POST: api/Animals
+        ///<summary>
+        ///Creates a new animal in the database
+        ///</summary>
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         public async Task<ActionResult<Animal>> PostAnimal(Animal animal)
         {
-            db.Animals.Add(animal);
-            await db.SaveChangesAsync();
+            _db.Animals.Add(animal);
+            await _db.SaveChangesAsync();
 
             return CreatedAtAction("GetAnimal", new { id = animal.AnimalId }, animal);
         }
 
         // DELETE: api/Animals/5
+        ///<summary>
+        ///Deletes animal based on id
+        ///</summary>
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteAnimal(int id)
         {
-            var animal = await db.Animals.FindAsync(id);
+            var animal = await _db.Animals.FindAsync(id);
             if (animal == null)
             {
                 return NotFound();
             }
 
-            db.Animals.Remove(animal);
-            await db.SaveChangesAsync();
+            _db.Animals.Remove(animal);
+            await _db.SaveChangesAsync();
 
             return NoContent();
         }
 
         private bool AnimalExists(int id)
         {
-            return db.Animals.Any(e => e.AnimalId == id);
+            return _db.Animals.Any(e => e.AnimalId == id);
         }
     }
 }
