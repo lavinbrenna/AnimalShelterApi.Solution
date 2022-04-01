@@ -17,11 +17,11 @@ _This project is an exploration in creating APIs while adding a variety of featu
 
 ## Setup/Installation Requirements
 
-* In order to use this application you must have MySQL Workbench installed. Depending on your machine please follow setup instructions listed here
+* In order to use this application you must have MySQL Workbench installed. Depending on your machine please follow setup instructions listed [here](https://www.learnhowtoprogram.com/c-and-net/getting-started-with-c/installing-and-configuring-mysql)
 * Clone this repository to your local machine
 * Navigate to the project's ```AnimalShelter``` folder.
-* In the project's ```Animal Shelter``` folder, you will next need to create an appsettings.json file with the following information where YOURPASSWORDHERE is the password used to connect to MySQL:
-  
+* In the project's ```AnimalShelter``` folder, you will next need to create an appsettings.json file with the following information where YOURPASSWORDHERE is the password used to connect to MySQL:
+
 ```
   {
   "Logging": {
@@ -33,15 +33,16 @@ _This project is an exploration in creating APIs while adding a variety of featu
   },
   "AllowedHosts": "*",
   "ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Port=3306;database=brenna_lavin;uid=root;pwd=Literatur3!;"
+    "DefaultConnection": "Server=localhost;Port=3306;database=brenna_lavin;uid=root;pwd=[YOURPASSWORDHERE];"
+  }
   }
   ```
 
-}
-Once saved, type cd Pierre in your command line to navigate to the main project folder.
-To install the project's dependencies, in the command line type dotnet restore
-To ensure the database is properly connected to the project, type dotnet ef database update, this will ideally apply the most recent migration of the database.
-Once in the Project folder, type dotnet run in the command line to run the program.
+* To install the project's dependencies, in the command line type ```dotnet restore```
+* To ensure the database is properly connected to the project, type ```dotnet ef database update```, this will ideally apply the most recent migration of the database.
+* Once in the Project folder, type ```dotnet run`` in the command line to run the program.
+
+## API Endpoints
 
 ## Known Bugs
 
