@@ -41,22 +41,47 @@ namespace AnimalShelter.Controllers
         }
 
         // GET: api/Animals
+        // [HttpGet]
+        // public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
+        // {
+        //     var route = Request.Path.Value;
+        //     var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
+        //     var pagedData = await db.Animals
+        //         .Skip((validFilter.PageNumber - 1) *validFilter.PageSize)
+        //         .Take(validFilter.PageSize)
+        //         .ToListAsync();
+        //     var totalRecords = await db.Animals.CountAsync();
+        //     var pagedResponse = PaginationHelper.CreatePagedResponse<Animal>(pagedData, validFilter, totalRecords, uriService, route);
+        //     return Ok(pagedResponse);
+        // }
+
+        //GET:api/Animals/
         [HttpGet]
-        public async Task<IActionResult> GetAll([FromQuery] PaginationFilter filter)
+        public async Task<ActionResult<IEnumerable<Animal>>> Get(string breed, string type, string name, string gender, int toDate, int fromDate)
         {
-            var route = Request.Path.Value;
-            var validFilter = new PaginationFilter(filter.PageNumber, filter.PageSize);
-            var pagedData = await db.Animals
-                .Skip((validFilter.PageNumber - 1) *validFilter.PageSize)
-                .Take(validFilter.PageSize)
-                .ToListAsync();
-            var totalRecords = await db.Animals.CountAsync();
-            var pagedResponse = PaginationHelper.CreatePagedResponse<Animal>(pagedData, validFilter, totalRecords, uriService, route);
-            return Ok(pagedResponse);
+            var query = db.Animals.AsQueryable();
+
+            if (breed != null)
+            {
+                query = query.Where(entry => entry.Breed == breed);
+            }
+            if (type != null)
+            {
+                query = query.Where(entry => entry.Type == type);
+            }
+            if(name != null)
+            {
+                query = query.Where(entry => entry.Name ==name);
+            }
+            if(gender != null)
+            {
+                query = query.Where(entry => entry.Gender == gender);
+            }
+            return await query.ToListAsync();
         }
         // GET: api/Animals/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetMessage(int id)
+        public async Task<IActionResult> GetAnimal(int id)
         {
             var animal = await db.Animals.FindAsync(id);
 
@@ -71,7 +96,7 @@ namespace AnimalShelter.Controllers
         // PUT: api/Animals/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutMessage(int id, Animal animal)
+        public async Task<IActionResult> PutAnimal(int id, Animal animal)
         {
             if (id != animal.AnimalId)
             {
