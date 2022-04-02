@@ -42,7 +42,47 @@ _This project is an exploration in creating APIs while adding a variety of featu
 * To ensure the database is properly connected to the project, type ```dotnet ef database update```, this will ideally apply the most recent migration of the database.
 * Once in the Project folder, type ```dotnet run`` in the command line to run the program.
 
-## API Endpoints
+## API Documentation
+You can explore the endpoints in Postman or in a browser!
+
+### Using Swagger Documentation
+To Explore the Animal Shelter Api with NSwag, after launching the project using ```dotnet run``` navigate to ```http://localhost:5004/swagger```
+### Note on Pagination AND Versioning
+Currently the pagination only works within version 1.0 of the api, to explore the pagination navigate to ```http://localhost:5004/api/1.0/animals in the browser.
+Each page shows 5 entries, and will provide links to the first, last, previous and next page. 
+
+### Endpoints
+
+Base URL: ```http://localhost:5004```
+
+#### Http Request Structure
+
+```
+GET /api/{component}
+POST /api/{component}
+GET /api/{component}/{id}
+PUT /api/{component}/{id}
+DELETE /api/{component}/{id}
+```
+
+Example Query:
+
+```
+https://localhost:5004/api/animals/3
+```
+
+Example JSON Response
+
+```
+{
+animalId: 3,
+type: "Cat",
+name: "Mr.Mistopholes",
+gender: "Male",
+breed: "Tuxedo",
+admissionDate: "2022-03-06T00:00:00"
+}
+```
 
 ## Known Bugs
 
