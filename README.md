@@ -71,9 +71,45 @@ Example Query:
 https://localhost:5004/api/animals/3
 ```
 
-Example JSON Response
+Example JSON Response:
 
 ```
+{
+animalId: 3,
+type: "Cat",
+name: "Mr.Mistopholes",
+gender: "Male",
+breed: "Tuxedo",
+admissionDate: "2022-03-06T00:00:00"
+}
+```
+
+Path Parameters:
+
+| Parameter | Type |Default| Required | Description|
+| ----------- | ----------- | ----------- | ----------- | ----------- |
+| id    | int | none | Return matches by id
+| type   | string | none | Return matches by type
+| gender | string | none | Return matches by gender
+|breed | string | none | Return matches by breed
+
+Example query string:
+
+```
+https://localhost:5004/api/animals?type=cat&gender=male
+```
+
+Example JSON response:
+
+```
+{
+animalId: 1,
+type: "Cat",
+name: "McCavity",
+gender: "Male",
+breed: "Ginger Tabby",
+admissionDate: "2022-03-18T00:00:00"
+},
 {
 animalId: 3,
 type: "Cat",
