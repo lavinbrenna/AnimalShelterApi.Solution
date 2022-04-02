@@ -68,7 +68,7 @@ DELETE /api/{component}/{id}
 Example Query:
 
 ```
-https://localhost:5004/api/animals/3
+http://localhost:5004/api/animals/3
 ```
 
 Example JSON Response:
@@ -96,7 +96,7 @@ Path Parameters:
 Example query string:
 
 ```
-https://localhost:5004/api/animals?type=cat&gender=male
+http://localhost:5004/api/animals?type=cat&gender=male
 ```
 
 Example JSON response:
